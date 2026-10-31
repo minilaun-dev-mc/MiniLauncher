@@ -1,0 +1,40 @@
+{
+  "name": "minilauncher-setup",
+  "productName": "MiniLauncher Setup",
+  "version": "2.0.1",
+  "description": "Установщик MiniLauncher",
+  "main": "main.js",
+  "private": true,
+  "scripts": {
+    "start": "electron .",
+    "java:detect": "node scripts/detect-java.js",
+    "payload": "node scripts/build-payload.js",
+    "payload:reuse": "node scripts/build-payload.js --skip-launcher",
+    "dist": "electron-builder --win portable",
+    "build": "node scripts/build-payload.js && electron-builder --win portable",
+    "manifest": "node scripts/make-update-manifest.js"
+  },
+  "dependencies": {
+    "yauzl": "^3.0.0"
+  },
+  "devDependencies": {
+    "electron": "^33.0.0",
+    "electron-builder": "^25.1.8",
+    "yazl": "^3.0.0"
+  },
+  "build": {
+    "appId": "app.minilauncher.setup",
+    "productName": "MiniLauncher Setup",
+    "directories": { "output": "out" },
+    "icon": "assets/icon.png",
+    "files": ["main.js", "preload.js", "lib/**/*", "renderer/**/*", "assets/**/*", "legal/**/*", "package.json"],
+    "extraResources": [{ "from": "payload/payload.zip", "to": "payload.zip" }],
+    "compression": "store",
+    "win": {
+      "target": "portable",
+      "icon": "assets/icon.png",
+      "requestedExecutionLevel": "asInvoker"
+    },
+    "portable": { "artifactName": "MiniLauncher-Setup-${version}.exe" }
+  }
+}

@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'">
+  <title>Удаление MiniLauncher</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="uninstall.css">
+</head>
+<body>
+  <div class="un">
+    <header class="un-bar">
+      <span class="un-title">Удаление</span>
+      <button class="wc close" id="un-x" aria-label="Закрыть"><svg viewBox="0 0 12 12"><path d="M2.5 2.5l7 7M9.5 2.5l-7 7"/></svg></button>
+    </header>
+
+    <main class="un-body" id="step-ask">
+      <img src="../assets/icon.png" class="un-logo" alt="">
+      <h1>Удалить <span class="y">Mini</span>Launcher?</h1>
+      <p class="muted" id="un-path">Программа будет удалена с этого компьютера.</p>
+      <label class="check">
+        <input type="checkbox" id="un-data"><span class="box"></span>
+        <span>Удалить также миры, моды и профили<br><small class="muted" id="un-data-path"></small></span>
+      </label>
+      <p class="error small" id="un-err"></p>
+      <div class="un-actions">
+        <button class="btn ghost" id="un-cancel">Отмена</button>
+        <button class="btn danger-fill" id="un-ok">Удалить</button>
+      </div>
+    </main>
+
+    <main class="un-body" id="step-done" hidden>
+      <div class="un-check"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
+      <h1>MiniLauncher удалён</h1>
+      <p class="muted">Папка установки будет очищена через пару секунд.</p>
+    </main>
+  </div>
+  <script src="uninstall.js"></script>
+</body>
+</html>

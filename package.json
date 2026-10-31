@@ -1,0 +1,51 @@
+{
+  "name": "minilauncher",
+  "productName": "MiniLauncher",
+  "version": "2.0.1",
+  "description": "MiniLauncher — лаунчер для Minecraft",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "pack": "electron-builder --win --dir",
+    "dist": "electron-builder"
+  },
+  "author": "MiniLauncher",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "minecraft-launcher-core": "^3.18.2",
+    "msmc": "^5.0.5"
+  },
+  "devDependencies": {
+    "electron": "^33.0.0",
+    "electron-builder": "^25.1.8"
+  },
+  "build": {
+    "appId": "app.minilauncher",
+    "productName": "MiniLauncher",
+    "icon": "assets/icon.png",
+    "files": [
+      "*.js",
+      "package.json",
+      "renderer/**/*",
+      "assets/**/*"
+    ],
+    "win": {
+      "target": "dir",
+      "icon": "assets/icon.png"
+    },
+    "linux": {
+      "target": "AppImage",
+      "category": "Game"
+    },
+    "mac": {
+      "target": "dmg",
+      "category": "public.app-category.games"
+    },
+    "directories": {
+      "output": "dist"
+    }
+  },
+  "minilauncher": {
+    "updateUrl": ""
+  }
+}

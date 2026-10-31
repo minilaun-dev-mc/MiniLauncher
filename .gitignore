@@ -1,0 +1,9 @@
+node_modules/
+dist/
+out/
+installer/node_modules/
+installer/out/
+installer/payload/
+installer/.cache/
+*.log
+.DS_Store

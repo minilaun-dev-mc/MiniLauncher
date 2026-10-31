@@ -1,0 +1,28 @@
+# Сборка установщика на GitHub и публикация релиза при создании тега вида v2.0.0
+name: release
+on:
+  push:
+    tags: ['v*']
+permissions:
+  contents: write
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 20 }
+      - run: npm install
+      - run: npm install
+        working-directory: installer
+      - run: npm run build
+        working-directory: installer
+      - name: Манифест обновлений
+        working-directory: installer
+        shell: bash
+        run: npm run manifest -- "https://github.com/${{ github.repository }}/releases/download/${{ github.ref_name }}" "Релиз ${{ github.ref_name }}"
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            installer/out/MiniLauncher-Setup-*.exe
+            installer/out/latest.json

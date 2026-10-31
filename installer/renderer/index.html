@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'">
+  <title>MiniLauncher Setup</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="shell">
+    <!-- Левая панель: логотип и шаги -->
+    <aside class="side">
+      <div class="side-glow"></div>
+      <div class="logo-wrap">
+        <img src="../assets/icon.png" class="logo" alt="">
+        <div class="wordmark"><span>Mini</span>Launcher</div>
+        <div class="ver" id="ver">Установка</div>
+      </div>
+      <ol class="steps" id="steps">
+        <li data-step="0"><i></i><span>Приветствие</span></li>
+        <li data-step="1"><i></i><span>Соглашения</span></li>
+        <li data-step="2"><i></i><span>Параметры</span></li>
+        <li data-step="3"><i></i><span>Установка</span></li>
+        <li data-step="4"><i></i><span>Готово</span></li>
+      </ol>
+      <div class="side-foot">Лаунчер для Minecraft</div>
+    </aside>
+
+    <!-- Правая часть -->
+    <section class="main">
+      <header class="bar">
+        <button class="wc" id="min" aria-label="Свернуть"><svg viewBox="0 0 12 12"><path d="M2 6h8"/></svg></button>
+        <button class="wc close" id="close" aria-label="Закрыть"><svg viewBox="0 0 12 12"><path d="M2.5 2.5l7 7M9.5 2.5l-7 7"/></svg></button>
+      </header>
+
+      <div class="pages">
+        <!-- 0 Приветствие -->
+        <div class="page" data-page="0">
+          <h1 id="w-title">Добро пожаловать</h1>
+          <p class="lead">Мы установим MiniLauncher на ваш компьютер. Всё необходимое, включая Java, уже внутри — интернет для установки не нужен.</p>
+          <ul class="feats">
+            <li><b>Автономно</b><span>Лаунчер и Java входят в этот файл</span></li>
+            <li><b>Без администратора</b><span>Ставится в вашу папку пользователя</span></li>
+            <li><b>Чисто</b><span>Удаляется целиком через «Приложения»</span></li>
+          </ul>
+          <p class="err" id="w-err"></p>
+        </div>
+
+        <!-- 1 Соглашения -->
+        <div class="page" data-page="1">
+          <h1>Соглашения</h1>
+          <p class="sub">Прочитайте условия использования лаунчера и встроенной Java.</p>
+          <div class="seg" id="legal-tabs"><span class="pill"></span>
+            <button class="seg-btn active" data-t="license">Лицензия MiniLauncher</button>
+            <button class="seg-btn" data-t="java">Уведомление о Java</button>
+          </div>
+          <pre class="doc" id="doc"></pre>
+          <label class="check"><input type="checkbox" id="accept"><span class="box"></span><span>Я прочитал и принимаю оба соглашения</span></label>
+        </div>
+
+        <!-- 2 Параметры -->
+        <div class="page" data-page="2">
+          <h1>Параметры установки</h1>
+          <p class="sub">Выберите, куда установить лаунчер.</p>
+          <div class="field">
+            <label>Папка установки</label>
+            <div class="row"><input class="input" id="dir" spellcheck="false"><button class="btn ghost" id="browse">Обзор</button></div>
+            <p class="hint" id="space"></p>
+          </div>
+          <div class="opts">
+            <label class="check"><input type="checkbox" id="o-desktop" checked><span class="box"></span><span>Ярлык на рабочем столе</span></label>
+            <label class="check"><input type="checkbox" id="o-start" checked><span class="box"></span><span>Ярлык в меню «Пуск»</span></label>
+            <label class="check"><input type="checkbox" id="o-launch" checked><span class="box"></span><span>Запустить MiniLauncher после установки</span></label>
+          </div>
+          <p class="err" id="o-err"></p>
+        </div>
+
+        <!-- 3 Установка -->
+        <div class="page" data-page="3">
+          <div class="center">
+            <div class="spin"><img src="../assets/icon.png" alt=""></div>
+            <h1 id="i-title">Устанавливаю…</h1>
+            <p class="sub" id="i-stage">Подготовка…</p>
+            <div class="progress"><div class="bar-fill" id="bar"></div></div>
+            <div class="pline"><span id="i-file"></span><b id="i-pct">0%</b></div>
+            <div class="fail" id="i-fail" hidden>
+              <p class="err" id="i-err"></p>
+              <div class="actions"><button class="btn ghost" id="i-close">Закрыть</button><button class="btn primary" id="i-retry">Повторить</button></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4 Готово -->
+        <div class="page" data-page="4">
+          <div class="center">
+            <div class="done-mark"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
+            <h1 id="d-title">Готово!</h1>
+            <p class="lead" id="d-text">MiniLauncher установлен.</p>
+          </div>
+        </div>
+      </div>
+
+      <footer class="foot" id="foot">
+        <button class="btn ghost" id="back">Назад</button>
+        <div class="grow"></div>
+        <button class="btn primary" id="next">Далее</button>
+      </footer>
+    </section>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>

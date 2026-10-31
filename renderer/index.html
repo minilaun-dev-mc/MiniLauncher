@@ -1,0 +1,339 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data: https://cdn.modrinth.com; style-src 'self'; script-src 'self'">
+  <title>MiniLauncher</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="bg"><div class="blob b1"></div><div class="blob b2"></div><div class="bg-grid"></div></div>
+
+  <div class="app">
+    <!-- Собственная рамка окна -->
+    <header class="titlebar">
+      <div class="brand">
+        <img src="../assets/icon.png" alt="" class="brand-logo">
+        <div class="brand-name"><span>Mini</span>Launcher</div>
+        <span class="ver-tag" id="app-ver">2.0</span>
+      </div>
+      <div class="tb-chip" id="tb-chip"><i></i><span id="tb-chip-text">Сборка не выбрана</span></div>
+      <div class="win-controls">
+        <button class="wc" id="wc-min" title="Свернуть" aria-label="Свернуть"><svg viewBox="0 0 12 12"><path d="M2 6h8"/></svg></button>
+        <button class="wc" id="wc-max" title="Развернуть" aria-label="Развернуть"><svg viewBox="0 0 12 12" id="wc-max-ico"><rect x="2.2" y="2.2" width="7.6" height="7.6" rx="1"/></svg></button>
+        <button class="wc close" id="wc-close" title="Закрыть" aria-label="Закрыть"><svg viewBox="0 0 12 12"><path d="M2.5 2.5l7 7M9.5 2.5l-7 7"/></svg></button>
+      </div>
+    </header>
+
+    <div class="body">
+      <nav class="sidebar" id="nav">
+        <span class="nav-indicator" id="nav-indicator"></span>
+        <div class="nav-group">Играть</div>
+        <button class="nav-item active" data-page="home"><svg viewBox="0 0 24 24"><path d="M4 11l8-7 8 7v8a1 1 0 01-1 1h-4v-6H9v6H5a1 1 0 01-1-1v-8z"/></svg><span>Главная</span></button>
+        <button class="nav-item" data-page="versions"><svg viewBox="0 0 24 24"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9L12 3zM12 12l8-4.5M12 12v9M12 12L4 7.5"/></svg><span>Версии</span></button>
+        <button class="nav-item" data-page="mods"><svg viewBox="0 0 24 24"><path d="M14 4h-4v3H7v4h3v3h4v-3h3V7h-3V4zM8 20h8"/></svg><span>Моды</span></button>
+        <button class="nav-item" data-page="servers"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="6" rx="2"/><rect x="3" y="14" width="18" height="6" rx="2"/><path d="M7 7h.01M7 17h.01"/></svg><span>Серверы</span></button>
+        <div class="nav-group">Личное</div>
+        <button class="nav-item" data-page="skins"><svg viewBox="0 0 24 24"><circle cx="12" cy="7" r="3.5"/><path d="M5 21v-3a4 4 0 014-4h6a4 4 0 014 4v3"/></svg><span>Скины</span></button>
+        <button class="nav-item" data-page="shots"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="1.6"/><path d="M21 16l-5-5-8 8"/></svg><span>Скриншоты</span></button>
+        <div class="nav-group">Система</div>
+        <button class="nav-item" data-page="console"><svg viewBox="0 0 24 24"><path d="M4 5h16v14H4zM8 10l3 2-3 2M13 14h4"/></svg><span>Консоль</span></button>
+        <button class="nav-item" data-page="settings"><svg viewBox="0 0 24 24"><path d="M4 7h10M18 7h2M4 17h2M10 17h10"/><circle cx="16" cy="7" r="2"/><circle cx="8" cy="17" r="2"/></svg><span>Настройки</span></button>
+        <div class="side-foot"><div class="dot" id="game-dot"></div><span id="game-status">Игра не запущена</span></div>
+      </nav>
+
+      <main class="content">
+        <!-- Главная -->
+        <section class="page active" id="page-home">
+          <div class="update-banner" id="update-banner" hidden>
+            <div class="ub-ico"><svg viewBox="0 0 24 24"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg></div>
+            <div class="ub-text"><b id="ub-title">Доступно обновление</b><small id="ub-sub"></small></div>
+            <button class="btn primary sm" id="ub-btn">Обновить</button>
+          </div>
+          <div class="hero" id="hero">
+            <div class="hero-particles" id="particles"></div>
+            <div class="hero-stage"><img src="../assets/icon.png" class="hero-cube" id="hero-cube" alt=""></div>
+            <div class="hero-text">
+              <div class="greet" id="greet">Добро пожаловать</div>
+              <blockquote id="quote">…</blockquote>
+              <div class="hero-actions">
+                <button class="btn primary" id="hero-play">Продолжить</button>
+                <button class="link-btn" id="quote-next">Другая фраза →</button>
+              </div>
+              <div class="hero-chips" id="hero-chips"></div>
+            </div>
+          </div>
+          <div class="stats">
+            <div class="stat"><div class="stat-ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div><div><small>Время в игре</small><b id="st-time">0 мин</b></div></div>
+            <div class="stat"><div class="stat-ico"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div><div><small>Запусков</small><b id="st-sessions">0</b></div></div>
+            <div class="stat"><div class="stat-ico"><svg viewBox="0 0 24 24"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9L12 3z"/></svg></div><div><small>Сборка</small><b id="st-build">—</b></div></div>
+            <div class="stat"><div class="stat-ico"><svg viewBox="0 0 24 24"><rect x="4" y="7" width="16" height="10" rx="2"/><path d="M8 11v2M12 11v2M16 11v2"/></svg></div><div><small>Память</small><b id="st-ram">4 ГБ</b></div></div>
+          </div>
+        </section>
+
+        <!-- Версии -->
+        <section class="page" id="page-versions">
+          <div class="page-head">
+            <div><div class="eyebrow">Библиотека</div><h1>Версии игры</h1><p class="muted" id="versions-sub">Загрузка списка…</p></div>
+            <div class="filters">
+              <div class="seg" id="type-filter"><span class="seg-pill"></span>
+                <button class="seg-btn active" data-type="release">Релизы</button>
+                <button class="seg-btn" data-type="snapshot">Снапшоты</button>
+                <button class="seg-btn" data-type="old">Старые</button>
+                <button class="seg-btn" data-type="installed">Скачанные</button>
+              </div>
+              <input class="search" id="search" type="search" placeholder="Поиск версии…" autocomplete="off">
+            </div>
+          </div>
+          <div class="list" id="version-list"></div>
+        </section>
+
+        <!-- Моды -->
+        <section class="page" id="page-mods">
+          <div class="page-head">
+            <div><div class="eyebrow">Расширения</div><h1>Моды</h1><p class="muted" id="mods-sub">Загрузчики, установленные моды и каталог Modrinth</p></div>
+            <div class="seg" id="mods-tabs"><span class="seg-pill"></span>
+              <button class="seg-btn active" data-tab="loaders">Загрузчики</button>
+              <button class="seg-btn" data-tab="installed">Установленные</button>
+              <button class="seg-btn" data-tab="catalog">Каталог</button>
+            </div>
+          </div>
+
+          <div class="sub-panel active" id="tab-loaders">
+            <div class="panel-tools">
+              <div class="seg" id="loader-filter"><span class="seg-pill"></span>
+                <button class="seg-btn active" data-loader="fabric">Fabric</button>
+                <button class="seg-btn" data-loader="quilt">Quilt</button>
+                <button class="seg-btn" data-loader="forge">Forge</button>
+              </div>
+              <div class="filters">
+                <label class="check small-check" id="snap-wrap"><input type="checkbox" id="loader-snaps"><span class="box"></span><span>Снапшоты</span></label>
+                <input class="search" id="loader-search" type="search" placeholder="Поиск версии…" autocomplete="off">
+              </div>
+            </div>
+            <p class="muted small" id="loaders-sub"></p>
+            <div class="list" id="loader-list"></div>
+          </div>
+
+          <div class="sub-panel" id="tab-installed">
+            <div class="build-note" id="inst-note"></div>
+            <div class="panel-tools">
+              <span class="muted small" id="inst-count"></span>
+              <div class="row-actions">
+                <button class="btn sm" id="mod-add">Добавить .jar</button>
+                <button class="btn sm ghost" id="mod-folder">Открыть папку</button>
+              </div>
+            </div>
+            <div class="list" id="mod-list"></div>
+          </div>
+
+          <div class="sub-panel" id="tab-catalog">
+            <div class="build-note" id="cat-note"></div>
+            <div class="panel-tools"><input class="search wide" id="cat-search" type="search" placeholder="Поиск модов на Modrinth…" autocomplete="off"><span class="muted small" id="cat-count"></span></div>
+            <div class="cat-grid" id="cat-grid"></div>
+          </div>
+        </section>
+
+        <!-- Серверы -->
+        <section class="page" id="page-servers">
+          <div class="page-head">
+            <div><div class="eyebrow">Мультиплеер</div><h1>Серверы</h1><p class="muted">Состояние, онлайн и быстрый вход одним нажатием</p></div>
+            <div class="row-actions">
+              <button class="btn ghost" id="srv-refresh"><svg viewBox="0 0 24 24"><path d="M20 12a8 8 0 11-2.3-5.6M20 4v5h-5"/></svg>Обновить</button>
+              <button class="btn primary" id="srv-add"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Добавить сервер</button>
+            </div>
+          </div>
+          <div class="list" id="srv-list"></div>
+        </section>
+
+        <!-- Скины -->
+        <section class="page" id="page-skins">
+          <div class="page-head">
+            <div><div class="eyebrow">Внешность</div><h1>Скины</h1><p class="muted" id="skins-sub">3D-просмотр, свой скин и копирование по нику</p></div>
+          </div>
+          <div class="skins-layout">
+            <div class="sv-card">
+              <div class="sv-stage" id="sv-stage">
+                <div class="sv-floor"></div>
+                <div class="sv-model" id="sv-model"></div>
+                <div class="sv-loading" id="sv-loading" hidden><i></i></div>
+              </div>
+              <div class="sv-bar">
+                <div class="sv-name"><span id="sv-title">—</span><small id="sv-sub"></small></div>
+                <div class="sv-tools">
+                  <button class="btn sm icon ghost" id="sv-walk" title="Ходьба"><svg viewBox="0 0 24 24"><circle cx="13" cy="4.5" r="1.8"/><path d="M9 21l2-6-2-3 2-5 4 2 2 3M11 15l4 2v4"/></svg></button>
+                  <button class="btn sm icon ghost" id="sv-reset" title="Сбросить поворот"><svg viewBox="0 0 24 24"><path d="M20 12a8 8 0 11-2.3-5.6M20 4v5h-5"/></svg></button>
+                </div>
+              </div>
+            </div>
+            <div class="skin-panel">
+              <div class="card">
+                <div class="sk-profile"><img class="sk-head" id="sk-head" alt=""><div><b id="sk-name">Нет профиля</b><div class="muted small" id="sk-type"></div></div></div>
+              </div>
+              <div class="staged" id="sk-staged" hidden>
+                <div><b>Новый скин готов</b><div class="muted small" id="sk-staged-name"></div></div>
+                <div class="row-actions"><button class="btn sm ghost" id="sk-cancel">Отмена</button><button class="btn sm primary" id="sk-apply">Применить</button></div>
+              </div>
+              <div class="card">
+                <h3><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Свой скин</h3>
+                <div class="field">
+                  <label>Модель рук</label>
+                  <div class="seg" id="model-seg"><span class="seg-pill"></span>
+                    <button class="seg-btn active" data-model="wide">Классическая (Steve)</button>
+                    <button class="seg-btn" data-model="slim">Тонкая (Alex)</button>
+                  </div>
+                </div>
+                <div class="sk-actions">
+                  <button class="btn primary" id="sk-pick"><svg viewBox="0 0 24 24"><path d="M12 16V4M7 9l5-5 5 5M5 20h14"/></svg>Загрузить PNG</button>
+                  <button class="btn" id="sk-save"><svg viewBox="0 0 24 24"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>Сохранить PNG</button>
+                </div>
+              </div>
+              <div class="card">
+                <h3><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>Скин по нику</h3>
+                <div class="row"><input class="input" id="sk-nick" placeholder="Ник игрока, например Notch" maxlength="16" autocomplete="off" spellcheck="false"><button class="btn" id="sk-lookup">Найти</button></div>
+                <p class="error small" id="sk-error"></p>
+              </div>
+              <div class="sk-note" id="sk-note"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v5h1"/></svg><span></span></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Скриншоты -->
+        <section class="page" id="page-shots">
+          <div class="page-head">
+            <div><div class="eyebrow">Галерея</div><h1>Скриншоты</h1><p class="muted" id="shots-sub">Все кадры из всех сборок</p></div>
+            <div class="row-actions"><button class="btn ghost" id="shots-refresh">Обновить</button><button class="btn" id="shots-folder">Открыть папку</button></div>
+          </div>
+          <div class="shot-grid" id="shot-grid"></div>
+        </section>
+
+        <!-- Консоль -->
+        <section class="page" id="page-console">
+          <div class="page-head"><div><div class="eyebrow">Диагностика</div><h1>Консоль</h1><p class="muted">Вывод игры и установщиков</p></div><button class="btn ghost" id="clear-log">Очистить</button></div>
+          <pre class="console" id="console">Здесь появятся логи после запуска игры.</pre>
+        </section>
+
+        <!-- Настройки -->
+        <section class="page" id="page-settings">
+          <div class="page-head"><div><div class="eyebrow">Лаунчер</div><h1>Настройки</h1><p class="muted">Память, Java, окно игры и внешний вид</p></div></div>
+          <div class="card-scroll">
+            <div class="card">
+              <h3><svg viewBox="0 0 24 24"><rect x="4" y="7" width="16" height="10" rx="2"/><path d="M8 11v2M12 11v2M16 11v2"/></svg>Производительность</h3>
+              <div class="field">
+                <div class="field-top"><label for="ram">Выделенная память</label><b id="ram-val">4 ГБ</b></div>
+                <input type="range" id="ram" min="1" max="16" step="1" value="4">
+                <p class="muted small" id="ram-hint"></p>
+              </div>
+              <div class="field">
+                <label for="jvm">Аргументы JVM</label>
+                <textarea class="input" id="jvm" rows="2" placeholder="Например: -XX:+UseG1GC -XX:MaxGCPauseMillis=50" spellcheck="false"></textarea>
+              </div>
+              <div class="field">
+                <label for="java">Путь к Java</label>
+                <div class="row"><input type="text" id="java" class="input" placeholder="Пусто — встроенная Java подбирается автоматически"><button class="btn ghost" id="java-pick">Обзор</button><button class="btn ghost" id="java-check">Проверить</button></div>
+                <p class="muted small" id="java-status">Java выбирается автоматически под версию игры.</p>
+              </div>
+            </div>
+            <div class="card">
+              <h3><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="M8 21h8"/></svg>Окно игры</h3>
+              <div class="setting"><div><b>Полноэкранный режим</b><small>Игра запускается на весь экран</small></div><label class="switch"><input type="checkbox" id="fullscreen"><i></i></label></div>
+              <div class="setting"><div><b>Размер окна</b><small>0 × 0 — размер по умолчанию</small></div><div class="row"><input class="input num" id="win-w" type="number" min="0" max="7680" placeholder="1280"><span class="muted">×</span><input class="input num" id="win-h" type="number" min="0" max="7680" placeholder="720"></div></div>
+              <div class="setting"><div><b>Скрывать лаунчер на время игры</b><small>Окно вернётся после закрытия Minecraft</small></div><label class="switch"><input type="checkbox" id="close-on-launch"><i></i></label></div>
+            </div>
+            <div class="card">
+              <h3><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 000 18z"/></svg>Внешний вид</h3>
+              <div class="field"><label>Акцентный цвет</label><div class="swatches" id="swatches"></div></div>
+              <div class="setting"><div><b>Меньше анимаций</b><small>Отключает движение фона и переходы</small></div><label class="switch"><input type="checkbox" id="reduce-motion"><i></i></label></div>
+            </div>
+            <div class="card">
+              <h3><svg viewBox="0 0 24 24"><path d="M3 7a2 2 0 012-2h4l2 2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V7z"/></svg>Папка игры</h3>
+              <div class="row"><code id="game-dir" class="input mono"></code><button class="btn ghost" id="open-files-s">Открыть</button></div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <!-- Нижняя панель -->
+    <footer class="dock">
+      <div class="profile" id="profile">
+        <button class="profile-btn" id="profile-btn">
+          <span class="avatar none" id="profile-avatar">?</span>
+          <span class="profile-text"><b id="profile-name">Нет профиля</b><small id="profile-type">Создайте профиль</small></span>
+          <svg class="chev" viewBox="0 0 24 24"><path d="M7 14l5-5 5 5"/></svg>
+        </button>
+        <div class="menu" id="profile-menu" hidden>
+          <div class="menu-list" id="profile-list"></div>
+          <div class="menu-sep"></div>
+          <button class="menu-item" id="add-ms"><span class="ico ms"><i></i><i></i><i></i><i></i></span> Войти через Microsoft</button>
+          <button class="menu-item" id="add-offline"><span class="ico off">+</span> Создать Offline профиль</button>
+        </div>
+      </div>
+
+      <div class="dock-right">
+        <button class="btn ghost" id="open-files"><svg viewBox="0 0 24 24"><path d="M3 7a2 2 0 012-2h4l2 2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V7z"/></svg>Файлы игры</button>
+        <div class="dd" id="build-dd">
+          <button class="dd-btn" id="build-btn">
+            <span class="dd-ico" id="build-ico">▦</span>
+            <span class="dd-text"><b id="build-name">Нет версий</b><small id="build-sub">Скачайте версию</small></span>
+            <svg class="chev" viewBox="0 0 24 24"><path d="M7 14l5-5 5 5"/></svg>
+          </button>
+          <div class="menu" id="build-menu" hidden><div class="menu-list" id="build-list"></div></div>
+        </div>
+        <button class="btn play" id="play">
+          <span class="play-main"><svg viewBox="0 0 24 24" id="play-ico"><path d="M8 5v14l11-7z"/></svg><span id="play-label">Играть</span></span>
+          <span class="play-bar" id="play-bar"></span>
+        </button>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Модалка: Offline -->
+  <div class="modal" id="modal" hidden>
+    <div class="modal-card">
+      <h2>Offline профиль</h2>
+      <p class="muted">Ник для игры без лицензии. Подходит для одиночной игры и серверов с отключённой проверкой.</p>
+      <input class="input" id="nick" maxlength="16" placeholder="Ник, например Steve" autocomplete="off" spellcheck="false">
+      <p class="error small" id="nick-error"></p>
+      <div class="modal-actions"><button class="btn ghost" id="nick-cancel">Отмена</button><button class="btn primary" id="nick-ok">Создать</button></div>
+    </div>
+  </div>
+
+  <!-- Модалка: загрузчик -->
+  <div class="modal" id="modal-loader" hidden>
+    <div class="modal-card">
+      <h2 id="ml-title">Fabric</h2>
+      <p class="muted">Будет скачана ванильная версия (если её нет) и загрузчик. Сборка получит отдельную папку с модами и сохранениями.</p>
+      <label class="check"><input type="checkbox" id="ml-sodium" checked><span class="box"></span><span id="ml-sodium-text">Установить Sodium — ускорение графики</span></label>
+      <div class="modal-actions"><button class="btn ghost" id="ml-cancel">Отмена</button><button class="btn primary" id="ml-ok">Установить</button></div>
+    </div>
+  </div>
+
+  <!-- Модалка: сервер -->
+  <div class="modal" id="modal-server" hidden>
+    <div class="modal-card">
+      <h2>Добавить сервер</h2>
+      <input class="input" id="srv-name" maxlength="40" placeholder="Название" autocomplete="off">
+      <input class="input" id="srv-addr" placeholder="Адрес: mc.example.com или 1.2.3.4:25565" autocomplete="off" spellcheck="false">
+      <p class="error small" id="srv-error"></p>
+      <div class="modal-actions"><button class="btn ghost" id="srv-cancel">Отмена</button><button class="btn primary" id="srv-ok">Добавить</button></div>
+    </div>
+  </div>
+
+  <!-- Модалка: подтверждение (вместо системного confirm) -->
+  <div class="modal modal-top" id="modal-confirm" hidden>
+    <div class="modal-card">
+      <h2 id="cf-title">Подтверждение</h2>
+      <p class="muted" id="cf-text"></p>
+      <div class="modal-actions"><button class="btn ghost" id="cf-no">Отмена</button><button class="btn danger-fill" id="cf-yes">Удалить</button></div>
+    </div>
+  </div>
+
+  <div class="toasts" id="toasts"></div>
+  <script src="ui.js"></script>
+  <script src="core.js"></script>
+  <script src="skin3d.js"></script>
+  <script src="pages.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
