@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MiniLauncher — лаунчер для Minecraft</title>
+<meta name="description" content="MiniLauncher: быстрый лаунчер для Minecraft с модами, серверами, скинами и встроенной Java. Один установщик, интернет для установки не нужен.">
+<link rel="icon" href="img/logo.png">
+<meta property="og:title" content="MiniLauncher — лаунчер для Minecraft">
+<meta property="og:description" content="Моды, серверы, 3D-скины и встроенная Java в одном установщике.">
+<meta property="og:image" content="img/logo.png">
+<style>
+:root{--accent:#ffd633;--accent-hi:#ffe36b;--bg:#08080b;--surface:rgba(255,255,255,.04);--line:rgba(255,255,255,.09);--text:#f5f5f8;--muted:#a3a3b3;--ease:cubic-bezier(.22,1,.36,1)}
+*{box-sizing:border-box;margin:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font:16px/1.6 "Inter","Segoe UI",system-ui,-apple-system,Roboto,sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+img{max-width:100%;display:block}
+.glow{position:fixed;inset:0;pointer-events:none;z-index:0;background:radial-gradient(700px 480px at 15% -5%,rgba(255,214,51,.16),transparent 70%),radial-gradient(600px 420px at 100% 40%,rgba(255,214,51,.07),transparent 70%)}
+.grid{position:fixed;inset:0;pointer-events:none;z-index:0;background-image:radial-gradient(rgba(255,255,255,.06) 1px,transparent 1px);background-size:30px 30px;mask-image:radial-gradient(ellipse at 50% 0,#000,transparent 65%);-webkit-mask-image:radial-gradient(ellipse at 50% 0,#000,transparent 65%)}
+.wrap{position:relative;z-index:1;max-width:1120px;margin:0 auto;padding:0 24px}
+header{position:sticky;top:0;z-index:10;backdrop-filter:blur(16px);background:rgba(8,8,11,.7);border-bottom:1px solid var(--line)}
+header .wrap{display:flex;align-items:center;justify-content:space-between;height:64px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:19px;letter-spacing:-.3px}
+.brand img{width:34px;height:34px;filter:drop-shadow(0 0 10px rgba(255,214,51,.5))}
+.brand span{color:var(--accent)}
+nav{display:flex;gap:26px;align-items:center;color:var(--muted);font-weight:600;font-size:15px}
+nav a:hover{color:var(--text)}
+.btn{display:inline-flex;align-items:center;gap:10px;padding:13px 24px;border-radius:14px;font-weight:800;font-size:16px;border:1px solid var(--line);background:var(--surface);transition:transform .25s var(--ease),box-shadow .3s,background .2s}
+.btn:hover{transform:translateY(-2px)}
+.btn.primary{background:linear-gradient(180deg,var(--accent-hi),var(--accent) 60%,#e0b400);color:#131313;border:0;box-shadow:0 10px 36px rgba(255,214,51,.28)}
+.btn.primary:hover{box-shadow:0 14px 48px rgba(255,214,51,.5)}
+.btn.sm{padding:9px 16px;font-size:14px;border-radius:11px}
+.btn svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.hero{display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:center;padding:84px 0 56px}
+.eyebrow{display:inline-flex;gap:8px;align-items:center;padding:5px 13px;border-radius:20px;border:1px solid rgba(255,214,51,.35);background:rgba(255,214,51,.08);color:var(--accent);font-weight:700;font-size:13px;margin-bottom:20px}
+h1{font-size:clamp(38px,6vw,64px);line-height:1.05;letter-spacing:-1.6px;font-weight:900}
+h1 em{font-style:normal;color:var(--accent)}
+.lead{margin-top:20px;font-size:19px;color:var(--muted);max-width:520px}
+.cta{display:flex;gap:14px;flex-wrap:wrap;margin-top:32px;align-items:center}
+.meta{margin-top:16px;color:var(--muted);font-size:14px}
+.meta b{color:var(--text)}
+.cube{position:relative;display:grid;place-items:center}
+.cube img{width:min(340px,70vw);border-radius:56px;filter:drop-shadow(0 0 70px rgba(255,214,51,.4));animation:float 6.5s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateY(0) rotate(-1.5deg)}50%{transform:translateY(-14px) rotate(1.5deg)}}
+.shot{border:1px solid var(--line);border-radius:20px;overflow:hidden;box-shadow:0 30px 90px rgba(0,0,0,.6),0 0 0 1px rgba(255,255,255,.03)}
+.hero-shot{margin-bottom:24px}
+section{padding:72px 0}
+h2{font-size:clamp(28px,4vw,40px);letter-spacing:-1px;font-weight:850;line-height:1.15}
+.sub{color:var(--muted);margin-top:10px;font-size:18px;max-width:620px}
+.features{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px;margin-top:40px}
+.card{padding:24px;border-radius:20px;background:var(--surface);border:1px solid var(--line);transition:transform .35s var(--ease),border-color .3s}
+.card:hover{transform:translateY(-5px);border-color:rgba(255,214,51,.45)}
+.ico{width:46px;height:46px;border-radius:13px;display:grid;place-items:center;background:rgba(255,214,51,.12);color:var(--accent);margin-bottom:16px}
+.ico svg{width:23px;height:23px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.card h3{font-size:18px;margin-bottom:6px}
+.card p{color:var(--muted);font-size:15px}
+.showcase{display:grid;gap:64px;margin-top:48px}
+.row{display:grid;grid-template-columns:1fr 1.25fr;gap:44px;align-items:center}
+.row.flip{grid-template-columns:1.25fr 1fr}.row.flip .txt{order:2}
+.row .txt h3{font-size:26px;letter-spacing:-.5px;margin-bottom:10px}
+.row .txt p{color:var(--muted);font-size:17px}
+.row .txt ul{margin-top:14px;padding-left:0;list-style:none;color:var(--muted)}
+.row .txt li{padding-left:26px;position:relative;margin:6px 0}
+.row .txt li::before{content:"";position:absolute;left:4px;top:.55em;width:10px;height:6px;border:solid var(--accent);border-width:0 0 2.5px 2.5px;transform:rotate(-45deg)}
+.note{margin-top:14px;font-size:13px;color:#7a7a8a}
+.steps{counter-reset:s;display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin-top:40px}
+.step{counter-increment:s;padding:24px;border-radius:20px;border:1px solid var(--line);background:var(--surface)}
+.step::before{content:counter(s);display:grid;place-items:center;width:38px;height:38px;border-radius:50%;background:var(--accent);color:#131313;font-weight:900;margin-bottom:14px}
+.step h3{font-size:18px;margin-bottom:6px}.step p{color:var(--muted);font-size:15px}
+details{border:1px solid var(--line);background:var(--surface);border-radius:16px;padding:18px 22px;margin-top:12px}
+summary{cursor:pointer;font-weight:700;list-style:none;display:flex;justify-content:space-between;gap:16px}
+summary::after{content:"+";color:var(--accent);font-size:22px;line-height:1;transition:transform .3s}
+details[open] summary::after{transform:rotate(45deg)}
+details p{margin-top:12px;color:var(--muted)}
+.final{text-align:center;padding:84px 24px;border-radius:28px;border:1px solid rgba(255,214,51,.3);background:radial-gradient(500px 260px at 50% 0,rgba(255,214,51,.16),transparent 70%),var(--surface);margin:24px 0 60px}
+.final .cta{justify-content:center}
+footer{position:relative;z-index:1;border-top:1px solid var(--line);padding:30px 0 44px;color:#7a7a8a;font-size:13.5px}
+footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .8s var(--ease),transform .8s var(--ease)}
+.reveal.in{opacity:1;transform:none}
+@media(max-width:860px){.hero,.row,.row.flip{grid-template-columns:1fr}.row.flip .txt{order:0}.cube{order:-1}nav a:not(.btn){display:none}.hero{padding-top:44px}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.reveal{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+<div class="glow"></div><div class="grid"></div>
+
+<header><div class="wrap">
+  <a class="brand" href="#top"><img src="img/logo.png" alt=""><div><span>Mini</span>Launcher</div></a>
+  <nav>
+    <a href="#features">Возможности</a><a href="#install">Установка</a><a href="#faq">Вопросы</a>
+    <a class="btn primary sm" data-download href="#">Скачать</a>
+  </nav>
+</div></header>
+
+<main class="wrap" id="top">
+  <div class="hero">
+    <div>
+      <div class="eyebrow">● Новая версия <span id="ver">2.0</span></div>
+      <h1>Лаунчер, который <em>не мешает</em> играть</h1>
+      <p class="lead">Моды в один клик, серверы с пингом, 3D-скины и встроенная Java. Один установщик — и можно играть.</p>
+      <div class="cta">
+        <a class="btn primary" data-download href="#"><svg viewBox="0 0 24 24"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>Скачать для Windows</a>
+        <a class="btn" id="repo-link" href="#">GitHub</a>
+      </div>
+      <p class="meta">Windows 10/11 · <b id="size">около 300 МБ</b> · бесплатно</p>
+    </div>
+    <div class="cube"><img src="img/logo.png" alt="Логотип MiniLauncher"></div>
+  </div>
+
+  <div class="shot hero-shot reveal"><img src="img/home.webp" alt="Главная страница MiniLauncher" width="1280" height="800"></div>
+
+  <section id="features">
+    <h2 class="reveal">Всё нужное — без лишнего</h2>
+    <p class="sub reveal">Быстрый запуск, аккуратный интерфейс и только те функции, которыми правда пользуются.</p>
+    <div class="features">
+      <div class="card reveal"><div class="ico"><svg viewBox="0 0 24 24"><path d="M14 4h-4v3H7v4h3v3h4v-3h3V7h-3V4zM8 20h8"/></svg></div><h3>Fabric, Quilt, Forge</h3><p>Установка загрузчика одним нажатием. Вместе с ним ставится Sodium или Embeddium.</p></div>
+      <div class="card reveal"><div class="ico"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg></div><h3>Каталог модов</h3><p>Поиск и установка модов с Modrinth прямо в лаунчере. Включать и выключать их можно переключателем.</p></div>
+      <div class="card reveal"><div class="ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="7" r="3.500"/><path d="M5 21v-3a4 4 0 014-4h6a4 4 0 014 4v3"/></svg></div><h3>Скины в 3D</h3><p>Вращайте модель, загружайте свой скин, берите чужой по нику. Работает и без лицензии.</p></div>
+      <div class="card reveal"><div class="ico"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="6" rx="2"/><rect x="3" y="14" width="18" height="6" rx="2"/><path d="M7 7h.01M7 17h.01"/></svg></div><h3>Серверы</h3><p>Онлайн, пинг и описание. Зайти на сервер можно одной кнопкой.</p></div>
+      <div class="card reveal"><div class="ico"><svg viewBox="0 0 24 24"><path d="M5 12l5 5 9-10"/></svg></div><h3>Java уже внутри</h3><p>Версии 8, 17, 21 и 25 лежат в установщике. Нужная выбирается под версию игры автоматически.</p></div>
+      <div class="card reveal"><div class="ico"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="1.600"/><path d="M21 16l-5-5-8 8"/></svg></div><h3>Галерея скриншотов</h3><p>Все кадры из всех сборок в одном месте. Крупный просмотр и удаление в корзину.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="showcase">
+      <div class="row reveal">
+        <div class="txt"><h3>Ваш скин — в пару кликов</h3><p>Крутите 3D-модель, переключайте тип рук и сразу видите результат.</p>
+          <ul><li>Загрузка своего PNG (64×64 и старые 64×32)</li><li>Скин любого игрока по нику</li><li>Для аккаунта Microsoft скин загружается в профиль</li></ul>
+          <p class="note">В профиле без лицензии скин виден только вам: так устроен офлайн-режим.</p></div>
+        <div class="shot"><img src="img/skins.webp" alt="Страница скинов с 3D-моделью" loading="lazy" width="1280" height="800"></div>
+      </div>
+      <div class="row flip reveal">
+        <div class="txt"><h3>Моды без поисков по сайтам</h3><p>Каталог Modrinth встроен в лаунчер и подбирает моды под вашу версию и загрузчик.</p>
+          <ul><li>Установка вместе с зависимостями</li><li>Список установленных, включение и отключение</li><li>Можно добавить свой файл .jar</li></ul></div>
+        <div class="shot"><img src="img/mods.webp" alt="Каталог модов" loading="lazy" width="1280" height="800"></div>
+      </div>
+      <div class="row reveal">
+        <div class="txt"><h3>Ваши цвета</h3><p>Семь акцентных цветов, плавные анимации и режим «меньше движения», если они мешают.</p></div>
+        <div class="shot"><img src="img/theme.webp" alt="Фиолетовая тема оформления" loading="lazy" width="1280" height="800"></div>
+      </div>
+    </div>
+    <p class="note" style="text-align:center;margin-top:28px">На скриншотах интерфейс с тестовыми данными.</p>
+  </section>
+
+  <section id="install">
+    <h2 class="reveal">Установка за минуту</h2>
+    <div class="steps">
+      <div class="step reveal"><h3>Скачайте</h3><p>Нажмите «Скачать» и сохраните установщик <code>MiniLauncher-Setup.exe</code>.</p></div>
+      <div class="step reveal"><h3>Запустите</h3><p>Первый запуск может занять до 30 секунд. Интернет для установки не нужен.</p></div>
+      <div class="step reveal"><h3>Создайте профиль</h3><p>Войдите через Microsoft или создайте офлайн-профиль с любым ником.</p></div>
+      <div class="step reveal"><h3>Играйте</h3><p>Выберите версию, нажмите «Скачать», затем «Играть».</p></div>
+    </div>
+  </section>
+
+  <section id="faq">
+    <h2 class="reveal">Частые вопросы</h2>
+    <div class="reveal">
+      <details><summary>Windows пишет «Неизвестный издатель»</summary><p>Установщик пока не подписан сертификатом издателя. Нажмите «Подробнее», затем «Выполнить в любом случае». Исходный код открыт для просмотра в репозитории.</p></details>
+      <details><summary>Нужно ли отдельно ставить Java?</summary><p>Нет. Java 8, 17, 21 и 25 уже внутри установщика, лаунчер подбирает нужную под версию игры.</p></details>
+      <details><summary>Куда сохраняются миры и настройки?</summary><p>В папку <code>%APPDATA%\.minilauncher</code>. При обновлении лаунчера и переустановке они не затрагиваются.</p></details>
+      <details><summary>Нужна ли лицензия Minecraft?</summary><p>Для игры на лицензионных серверах нужен аккаунт Microsoft с купленной игрой. Офлайн-профиль подходит для одиночной игры и серверов без проверки лицензии.</p></details>
+      <details><summary>Это официальный лаунчер?</summary><p>Нет. MiniLauncher — независимый проект, он не связан с Mojang Studios и Microsoft. Minecraft является товарным знаком Mojang.</p></details>
+    </div>
+  </section>
+
+  <div class="final reveal">
+    <h2>Готовы играть?</h2>
+    <p class="sub" style="margin:10px auto 26px">Скачайте MiniLauncher и запустите игру за пару минут.</p>
+    <div class="cta"><a class="btn primary" data-download href="#"><svg viewBox="0 0 24 24"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>Скачать для Windows</a></div>
+  </div>
+</main>
+
+<footer><div class="wrap">
+  <div>© <span id="year">2026</span> MiniLauncher. Неофициальный проект, не связан с Mojang Studios и Microsoft.</div>
+  <div><a id="rel-link" href="#">Все версии</a></div>
+</div></footer>
+
+<script>
+// ====== НАСТРОЙКА: впишите свой репозиторий в формате «логин/репозиторий» ======
+const REPO = 'minilaun-dev-mc/MiniLauncher';
+// ================================================================================
+const base = `https://github.com/${REPO}`;
+const releasesUrl = `${base}/releases/latest`;
+document.getElementById('year').textContent = new Date().getFullYear();
+document.getElementById('repo-link').href = base;
+document.getElementById('rel-link').href = `${base}/releases`;
+const setDownload = url => document.querySelectorAll('[data-download]').forEach(a => { a.href = url; });
+setDownload(releasesUrl);                         // запасной вариант: страница последнего релиза
+
+// Подставляем версию и прямую ссылку на последний установщик
+if (!REPO.includes('ВАШ-')) {
+  fetch(`https://api.github.com/repos/${REPO}/releases/latest`).then(r => r.ok ? r.json() : Promise.reject()).then(rel => {
+    const exe = (rel.assets || []).find(a => /\.exe$/i.test(a.name));
+    if (exe) {
+      setDownload(exe.browser_download_url);
+      document.getElementById('size').textContent = `около ${Math.round(exe.size / 1048576)} МБ`;
+    }
+    if (rel.tag_name) document.getElementById('ver').textContent = rel.tag_name.replace(/^v/, '');
+  }).catch(() => {});
+}
+
+// Плавное появление блоков при прокрутке
+const io = 'IntersectionObserver' in window ? new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { threshold: .12 }) : null;
+document.querySelectorAll('.reveal').forEach(n => io ? io.observe(n) : n.classList.add('in'));
+</script>
+</body>
+</html>
