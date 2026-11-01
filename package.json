@@ -46,6 +46,6 @@
     }
   },
   "minilauncher": {
-    "updateUrl": "minilauncher": { "updateUrl": "https://github.com/minilaun-dev-mc/MiniLauncher/releases/latest/download/latest.json" }"
+  "updateUrl": "https://github.com/minilaun-dev-mc/MiniLauncher/releases/latest/download/latest.json"
   }
 }
